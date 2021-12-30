@@ -1,13 +1,14 @@
 
 import React from "react";
 import {
-  Switch,
   Route,
-  useParams
+  useParams,
+  Link
 } from "react-router-dom";
-import Comments from "../components/comments/Comments";
+
 import HighlightedQuote from "../components/quotes/HighlightedQuote";
 import NoQuotesFound from "../components/quotes/NoQuotesFound";
+import Comments from "../components/comments/Comments";
 const DUMMY_QUOTES=[
   {id:"q1",author:"George Martin",text:"A song of ice and fire"},
   {id:"q2",author:"George Martin",text:"A song of ice and fire"},
@@ -22,15 +23,15 @@ const QuoteDetail=()=>{
       return (<NoQuotesFound/>);
     }
     return (
-
-
         <><h1>Quote Detail Page</h1><p>{params.quoteId}</p>
-        <HighlightedQuote text={quote.text} author={quote.author}/>
-         <Switch>
-        <Route path={`quotes/${params.quoteId}/comments`} >
+        <HighlightedQuote text={quote.text} author={quote.author} />
+        <div className="centered">
+          <Link  className="btn--flat" to={`quotes/${params.quoteId}/comments`}>Comments...</Link>
+        </div>
+        {/* doubt below */}
+        <Route path={`quotes/${params.quoteId}/comments`} exact>
           <Comments />
         </Route>
-      </Switch>
         </>
     );
 }

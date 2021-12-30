@@ -1,12 +1,45 @@
-import { useRef } from 'react';
+import { useRef ,useState } from 'react';
+import { isCompositeComponentWithType } from 'react-dom/cjs/react-dom-test-utils.production.min';
+import { Prompt } from 'react-router-dom';
 
 import Card from '../UI/Card';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import classes from './QuoteForm.module.css';
 
 const QuoteForm = (props) => {
+  const [isEntering, setIsEntering] = useState(false);
   const authorInputRef = useRef();
   const textInputRef = useRef();
+  const onFocusFormHandler=()=>{
+    console.log('Fuck!')
+    setIsEntering(true);
+  }
+  function isEmpty(str){
+    if(str===null||str.trim()===""){
+      return true;
+    }
+    return false;
+
+  }
+  const finshEnteringHandler=()=>{
+    const author=authorInputRef.current.value;
+    const text=textInputRef.current.value;
+    if(isEmpty(author)){
+      setIsEntering(true);
+    }
+    else{
+      setIsEntering(false);
+    }
+    if(isEmpty(text)){
+      setIsEntering(true);
+    }
+    else{
+      setIsEntering(false);
+    }
+
+
+    
+  }
 
   function submitFormHandler(event) {
     event.preventDefault();
@@ -20,8 +53,9 @@ const QuoteForm = (props) => {
   }
 
   return (
+    <><Prompt when={isEntering} message="Are you sure you want to leave without entering valid data in the form fields?" />
     <Card>
-      <form className={classes.form} onSubmit={submitFormHandler}>
+      <form onFocus={onFocusFormHandler} className={classes.form} onSubmit={submitFormHandler}>
         {props.isLoading && (
           <div className={classes.loading}>
             <LoadingSpinner />
@@ -37,10 +71,10 @@ const QuoteForm = (props) => {
           <textarea id='text' rows='5' ref={textInputRef}></textarea>
         </div>
         <div className={classes.actions}>
-          <button className='btn'>Add Quote</button>
+          <button onClick={finshEnteringHandler} className='btn'>Add Quote</button>
         </div>
       </form>
-    </Card>
+    </Card></>
   );
 };
 
