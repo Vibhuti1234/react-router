@@ -3,7 +3,8 @@ import React from "react";
 import {
   Route,
   useParams,
-  Link
+  Link,
+  Switch
 } from "react-router-dom";
 
 import HighlightedQuote from "../components/quotes/HighlightedQuote";
@@ -29,9 +30,12 @@ const QuoteDetail=()=>{
           <Link  className="btn--flat" to={`quotes/${params.quoteId}/comments`}>Comments...</Link>
         </div>
         {/* doubt below */}
-        <Route path={`quotes/${params.quoteId}/comments`} exact>
+        <Switch>
+        <Route path={`quotes/${params.quoteId}/comments`}>
           <Comments />
         </Route>
+        </Switch>
+
         </>
     );
 }
